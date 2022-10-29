@@ -1,0 +1,11 @@
+port: 12000
+mysql:
+  "master":
+    "host": "127.0.0.1"
+    "port": 3306
+    "username": "root"
+    "password": "Photon!123"
+    "db_name": "dropbox"
+  "max_open_conns": 40
+  "max_idle_conns": 20
+  "log_level": "info"
