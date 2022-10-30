@@ -124,12 +124,24 @@ func action(ctx *cli.Context) error {
 
 	log.Info("Starting dropbox api server...")
 
-	server.New(cfg.Port, service.New(db)).Run()
+	service, err := service.New(
+		ctx.Context,
+		db,
+		cfg.NodeEndpoint,
+		cfg.DepotNodeEndpoint,
+	)
+	if err != nil {
+		return err
+	}
+
+	server.New(cfg.Port, service).Run()
 	return nil
 }
 
 // Config defines the config for api service.
 type Config struct {
-	Port  int          `yaml:"port"`
-	MySQL mysql.Config `yaml:"mysql"`
+	Port              int          `yaml:"port"`
+	MySQL             mysql.Config `yaml:"mysql"`
+	NodeEndpoint      string       `yaml:"node_endpoint"`
+	DepotNodeEndpoint string       `yaml:"depot_node_endpoint"`
 }

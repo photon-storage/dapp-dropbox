@@ -50,6 +50,8 @@ func (s *Server) registerRouter(service *service.Service) {
 	s.engine.Use(handleError(), cors())
 	g := s.engine.Group("dropbox/v1")
 
+	g.POST("upload", s.handle(service.Upload))
+
 	g.GET("ping", s.handle(service.Ping))
 }
 
