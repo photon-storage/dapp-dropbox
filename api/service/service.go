@@ -28,7 +28,7 @@ type Service struct {
 func New(
 	ctx context.Context,
 	db *gorm.DB,
-	nodeEndpoint,
+	nodeEndpoint string,
 	depotEndpoint string,
 ) (*Service, error) {
 	nc, err := rpcDialConfig(nodeEndpoint).Dial(ctx)

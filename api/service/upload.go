@@ -1,12 +1,14 @@
 package service
 
 import (
+	"encoding/hex"
+
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/types/known/emptypb"
-	"gorm.io/gorm"
 
 	fieldparams "github.com/photon-storage/go-photon/config/fieldparams"
+	"github.com/photon-storage/go-photon/crypto/bls"
 	"github.com/photon-storage/go-photon/crypto/sha256"
 	"github.com/photon-storage/go-photon/depot"
 	"github.com/photon-storage/go-photon/proto/consensus/domain"
@@ -46,7 +48,8 @@ func (s *Service) Upload(c *gin.Context) error {
 		return err
 	}
 
-	tx, hash, err := s.buildCommitTx(uf)
+	sk := nextSk()
+	tx, hash, err := s.buildCommitTx(sk, uf)
 	if err != nil {
 		return err
 	}
@@ -87,11 +90,13 @@ func (s *Service) Upload(c *gin.Context) error {
 		received++
 	}
 
-	return insertObject(s.db, file.Filename, hash.Hex(), uf)
+	return s.insertObject(file.Filename, sk.PublicKey().Hex(), hash.Hex(), uf)
 }
 
-func (s *Service) buildCommitTx(uf *depot.UploadFile) (*pbc.SignedTransaction, sha256.Hash, error) {
-	sk := nextSk()
+func (s *Service) buildCommitTx(
+	sk bls.SecretKey,
+	uf *depot.UploadFile,
+) (*pbc.SignedTransaction, sha256.Hash, error) {
 	pk := sk.PublicKey().Bytes()
 	acct, err := s.nodeCli.GetAccount(
 		s.ctx,
@@ -145,19 +150,21 @@ func (s *Service) buildCommitTx(uf *depot.UploadFile) (*pbc.SignedTransaction, s
 	}, h, nil
 }
 
-func insertObject(
-	db *gorm.DB,
+func (s *Service) insertObject(
 	name string,
+	pk string,
 	txHash string,
 	uf *depot.UploadFile,
 ) error {
-	return db.Model(&orm.Object{}).Create(&orm.Object{
-		Name:         name,
-		CommitTxHash: txHash,
-		Hash:         uf.OriginalHash().Hex(),
-		Size:         uf.OriginalSize(),
-		EncodedHash:  uf.EncodedHash().Hex(),
-		EncodedSize:  uf.EncodedSize(),
-		Status:       orm.ObjectPending,
+	return s.db.Model(&orm.Object{}).Create(&orm.Object{
+		Name:           name,
+		OwnerPublicKey: pk,
+		DepotPublicKey: hex.EncodeToString(s.depotPk),
+		CommitTxHash:   txHash,
+		Hash:           uf.OriginalHash().Hex(),
+		Size:           uf.OriginalSize(),
+		EncodedHash:    uf.EncodedHash().Hex(),
+		EncodedSize:    uf.EncodedSize(),
+		Status:         orm.ObjectPending,
 	}).Error
 }

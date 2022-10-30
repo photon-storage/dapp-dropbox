@@ -15,15 +15,17 @@ const (
 
 // Object is a gorm table definition represents the objects.
 type Object struct {
-	ID           uint64 `gorm:"primary_key"`
-	Name         string
-	CommitTxHash string
-	Hash         string
-	Size         uint64
-	EncodedHash  string
-	EncodedSize  uint64
-	Cid          string
-	Status       ObjectStatus
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
+	ID             uint64 `gorm:"primary_key"`
+	Name           string
+	OwnerPublicKey string
+	DepotPublicKey string
+	CommitTxHash   string
+	Hash           string
+	Size           uint64
+	EncodedHash    string
+	EncodedSize    uint64
+	Cid            string
+	Status         ObjectStatus
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
 }
