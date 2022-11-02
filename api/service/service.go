@@ -29,11 +29,16 @@ func New(
 	ctx context.Context,
 	db *gorm.DB,
 	nodeEndpoint string,
-	depotEndpoint string,
+	depotBootstrap []string,
 ) (*Service, error) {
 	nc, err := rpcDialConfig(nodeEndpoint).Dial(ctx)
 	if err != nil {
 		return nil, errors.Wrap(err, "dial node failed")
+	}
+
+	depotEndpoint, err := findDepot(ctx, depotBootstrap)
+	if err != nil {
+		return nil, err
 	}
 
 	dc, err := rpcDialConfig(depotEndpoint).Dial(ctx)

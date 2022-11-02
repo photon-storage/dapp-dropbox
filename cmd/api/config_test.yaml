@@ -10,4 +10,6 @@ mysql:
   "max_idle_conns": 20
   "log_level": "info"
 node_endpoint: "127.0.0.1:6000"
-depot_node_endpoint: "127.0.0.1:8000"
+depot_bootstrap: [
+  "enr:-Ky4QPDqFMbbLTztA3GuRGtpPjN7D0XOQu8-9y6jNVT_rwl3Si_EEZfAPng3v8WdO31yqcwlDhW7TTvxE0JIscP1kyiGAYNZFOoEh2F0dG5ldHOIAAAAAAAAAACCaWSCdjSCaXCEEo2hjIRyb2xlhG5vZGWJc2VjcDI1NmsxoQLxTElPoVGvS8CJAZQ-OOw14REjNI_CZ_gFWnVMKegqDIN0Y3CCGDiDdWRwghic"
+]

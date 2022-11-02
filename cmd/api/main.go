@@ -128,7 +128,7 @@ func action(ctx *cli.Context) error {
 		ctx.Context,
 		db,
 		cfg.NodeEndpoint,
-		cfg.DepotNodeEndpoint,
+		cfg.DepotBootstrap,
 	)
 	if err != nil {
 		return err
@@ -140,8 +140,8 @@ func action(ctx *cli.Context) error {
 
 // Config defines the config for api service.
 type Config struct {
-	Port              int          `yaml:"port"`
-	MySQL             mysql.Config `yaml:"mysql"`
-	NodeEndpoint      string       `yaml:"node_endpoint"`
-	DepotNodeEndpoint string       `yaml:"depot_node_endpoint"`
+	Port           int          `yaml:"port"`
+	MySQL          mysql.Config `yaml:"mysql"`
+	NodeEndpoint   string       `yaml:"node_endpoint"`
+	DepotBootstrap []string     `yaml:"depot_bootstrap"`
 }
