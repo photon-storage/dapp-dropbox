@@ -13,6 +13,13 @@ const (
 	ObjectFailed
 )
 
+var objectMap = map[ObjectStatus]string{
+	ObjectPending:   "pending",
+	ObjectCommitted: "committed",
+	ObjectFinalized: "finalized",
+	ObjectFailed:    "failed",
+}
+
 // Object is a gorm table definition represents the objects.
 type Object struct {
 	ID             uint64 `gorm:"primary_key"`
@@ -28,4 +35,12 @@ type Object struct {
 	Status         ObjectStatus
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
+}
+
+func (o ObjectStatus) String() string {
+	if v, ok := objectMap[o]; ok {
+		return v
+	}
+
+	return "invalid"
 }
