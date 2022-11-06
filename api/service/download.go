@@ -7,11 +7,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/photo-storage/dropbox/database/orm"
 	"github.com/photon-storage/go-photon/crypto/codec"
 	"github.com/photon-storage/go-photon/crypto/sha256"
 	"github.com/photon-storage/go-photon/depot"
 	pbd "github.com/photon-storage/photon-proto/depot"
+
+	"github.com/photo-storage/dropbox/database/orm"
 )
 
 const DownloadLabel = "download"
