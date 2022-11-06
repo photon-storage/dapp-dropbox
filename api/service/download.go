@@ -1,7 +1,6 @@
 package service
 
 import (
-	"encoding/hex"
 	"fmt"
 	"strconv"
 
@@ -26,7 +25,7 @@ func (s *Service) Download(c *gin.Context) error {
 		return err
 	}
 
-	hash, err := hex.DecodeString(o.Hash)
+	ohash, err := sha256.HashFromHex(o.Hash)
 	if err != nil {
 		return err
 	}
@@ -37,7 +36,7 @@ func (s *Service) Download(c *gin.Context) error {
 	}
 
 	objResp, err := s.depotCli.ObjectStatus(c, &pbd.ObjectStatusRequest{
-		Hash:         hash,
+		Hash:         ohash.Bytes(),
 		CommitTxHash: commitTxHash.Bytes(),
 	})
 	if err != nil {
@@ -49,11 +48,6 @@ func (s *Service) Download(c *gin.Context) error {
 	}
 
 	decoder, err := codec.NewMultikey(objResp.Decoder)
-	if err != nil {
-		return err
-	}
-
-	ohash, err := sha256.HashFromHex(o.Hash)
 	if err != nil {
 		return err
 	}

@@ -36,6 +36,7 @@ func New(
 		return nil, errors.Wrap(err, "dial node failed")
 	}
 
+	// TODO(doris): Async find multi depot client.
 	depotEndpoint, err := findDepot(ctx, depotBootstrap)
 	if err != nil {
 		return nil, err
