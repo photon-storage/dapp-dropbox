@@ -51,6 +51,7 @@ func (s *Server) registerRouter(service *service.Service) {
 	g := s.engine.Group("dropbox/v1")
 
 	g.POST("upload", s.handle(service.Upload))
+	g.GET("download", s.handle(service.Download))
 	g.GET("objects", s.handle(service.Objects))
 
 	g.GET("ping", s.handle(service.Ping))

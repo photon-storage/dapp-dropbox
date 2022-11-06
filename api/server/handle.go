@@ -63,6 +63,10 @@ func (s *Server) handle(fn handleFunc) gin.HandlerFunc {
 			return
 		}
 
+		if _, exist := ctx.Get(service.DownloadLabel); exist {
+			return
+		}
+
 		ctx.AbortWithStatusJSON(
 			http.StatusOK,
 			Response{Code: http.StatusOK, Data: result[0]},
