@@ -7,7 +7,7 @@ import "time"
 type ObjectStatus uint8
 
 const (
-	ObjectPending = iota + 1
+	ObjectPending ObjectStatus = iota + 1
 	ObjectCommitted
 	ObjectFinalized
 	ObjectFailed

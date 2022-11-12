@@ -53,12 +53,15 @@ func New(
 		return nil, err
 	}
 
+	nodeCli := pbc.NewNodeClient(nc)
+	go newTxStatusTask(ctx, db, nodeCli).run()
+	go newCIDTask(ctx, db, depotCli).run()
 	return &Service{
 		ctx:              ctx,
 		db:               db,
 		depotPk:          depotState.GetPublicKey(),
 		depotDiscoveryID: depotState.GetDiscoveryId(),
-		nodeCli:          pbc.NewNodeClient(nc),
+		nodeCli:          nodeCli,
 		depotCli:         depotCli,
 	}, nil
 }

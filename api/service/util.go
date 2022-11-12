@@ -63,7 +63,7 @@ func newPeerFinder(
 		p2p.HostConfig{
 			NetworkID: p2p.NewID(),
 			Role:      p2p.RoleObserver,
-			TCPPort:   10001,
+			TCPPort:   10003,
 			MaxPeers:  100,
 		},
 		scorer,
@@ -73,7 +73,7 @@ func newPeerFinder(
 	}
 
 	return p2p.NewPeerFinder(ctx, h, p2p.PeerFinderConfig{
-		UDPPort:        10002,
+		UDPPort:        10004,
 		BootstrapNodes: bootstrap,
 	})
 }

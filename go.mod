@@ -7,11 +7,12 @@ require (
 	github.com/ethereum/go-ethereum v1.10.25
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-playground/validator/v10 v10.11.1
-	github.com/photon-storage/go-common v0.0.0-20221022145521-6474050485ca
-	github.com/photon-storage/go-photon v0.0.0-20221021014701-970bcf68e98f
-	github.com/photon-storage/photon-proto v0.0.0-20221020125617-e5acdd13472b
+	github.com/photon-storage/go-common v0.0.0-20221104050211-5fd74299d91a
+	github.com/photon-storage/go-photon v0.0.0-20221111133042-905d1cc031a3
+	github.com/photon-storage/photon-proto v0.0.0-20221109124216-78863e7ef48b
 	github.com/pkg/errors v0.9.1
 	github.com/urfave/cli/v2 v2.16.3
+	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/yaml.v2 v2.4.0
 	gorm.io/driver/mysql v1.4.3
@@ -170,6 +171,7 @@ require (
 	github.com/multiformats/go-varint v0.0.6 // indirect
 	github.com/nxadm/tail v1.4.8 // indirect
 	github.com/onsi/ginkgo v1.16.5 // indirect
+	github.com/onsi/gomega v1.20.1 // indirect
 	github.com/opencontainers/runtime-spec v1.0.2 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58 // indirect
@@ -218,7 +220,6 @@ require (
 	golang.org/x/tools v0.1.12 // indirect
 	golang.org/x/xerrors v0.0.0-20220609144429-65e65417b02f // indirect
 	google.golang.org/genproto v0.0.0-20220915135415-7fd63a7952de // indirect
-	google.golang.org/grpc v1.49.0 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	lukechampine.com/blake3 v1.1.7 // indirect
