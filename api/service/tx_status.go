@@ -54,6 +54,7 @@ func (t *txStatusTask) updateObjectTxStatus() error {
 	os := make([]*orm.Object, 0)
 	if err := t.db.Model(&orm.Object{}).
 		Where("status in (?,?)", orm.ObjectPending, orm.ObjectCommitted).
+		Limit(10).
 		Find(&os).
 		Error; err != nil {
 		return err
