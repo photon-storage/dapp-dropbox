@@ -51,6 +51,7 @@ func (c *cidTask) fetchCID() error {
 	os := make([]*orm.Object, 0)
 	if err := c.db.Model(&orm.Object{}).
 		Where("cid = ?", "").
+		Limit(10).
 		Find(&os).
 		Error; err != nil {
 		return err
