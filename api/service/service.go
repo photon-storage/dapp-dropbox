@@ -53,18 +53,17 @@ func New(
 		return nil, err
 	}
 
-	s := &Service{
+	nodeCli := pbc.NewNodeClient(nc)
+	go newTxStatusTask(ctx, db, nodeCli).run()
+	go newCIDTask(ctx, db, depotCli).run()
+	return &Service{
 		ctx:              ctx,
 		db:               db,
 		depotPk:          depotState.GetPublicKey(),
 		depotDiscoveryID: depotState.GetDiscoveryId(),
-		nodeCli:          pbc.NewNodeClient(nc),
+		nodeCli:          nodeCli,
 		depotCli:         depotCli,
-	}
-
-	go s.scheduler(10, newTask("fetch_cid", s.fetchCID))
-	go s.scheduler(5, newTask("object_tx_status", s.updateObjectTxStatus))
-	return s, nil
+	}, nil
 }
 
 func rpcDialConfig(endpoint string) rpc.DialConfig {
