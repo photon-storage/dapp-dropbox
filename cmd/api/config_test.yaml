@@ -5,7 +5,7 @@ mysql:
     "port": 3306
     "username": "root"
     "password": "mysql123"
-    "db_name": "dropbox"
+    "db_name": "dapp_dropbox"
   "max_open_conns": 40
   "max_idle_conns": 20
   "log_level": "info"
