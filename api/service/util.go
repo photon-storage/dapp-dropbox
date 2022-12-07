@@ -22,7 +22,7 @@ func findDepot(ctx context.Context, bootstrap []string) (string, error) {
 
 	deadline := time.Now().Add(time.Minute)
 	timedOut := false
-	endpoint := ""
+	var endpoint p2p.RPCEndpoint
 	pf.Run(func(n *enode.Node) bool {
 		if time.Now().After(deadline) {
 			timedOut = true
@@ -40,9 +40,10 @@ func findDepot(ctx context.Context, bootstrap []string) (string, error) {
 			return false
 		}
 
-		// NOTE: return endpoint directly due to photon node bug,
-		// change this if the bug fixed.
-		endpoint = "18.141.161.140:8000"
+		if err := n.Load(&endpoint); err != nil {
+			log.Error("load endpoint", "err", err)
+		}
+
 		return true
 	})
 
@@ -50,7 +51,7 @@ func findDepot(ctx context.Context, bootstrap []string) (string, error) {
 		return "", ErrTimeout
 	}
 
-	return endpoint, nil
+	return string(endpoint), nil
 }
 
 func newPeerFinder(
