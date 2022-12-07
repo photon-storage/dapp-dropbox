@@ -98,12 +98,7 @@ func main() {
 			log.ForceColor()
 		}
 
-		configType, err := pc.ConfigTypeFromString(ctx.String(networkFlag.Name))
-		if err != nil {
-			return err
-		}
-
-		return pc.Use(configType)
+		return nil
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -112,6 +107,15 @@ func main() {
 }
 
 func action(ctx *cli.Context) error {
+	configType, err := pc.ConfigTypeFromString(ctx.String(networkFlag.Name))
+	if err != nil {
+		return err
+	}
+
+	if err := pc.Use(configType); err != nil {
+		return err
+	}
+
 	cfg := &Config{}
 	if err := config.Load(ctx.String(configPathFlag.Name), cfg); err != nil {
 		log.Fatal("reading api config failed", "error", err)
@@ -128,6 +132,7 @@ func action(ctx *cli.Context) error {
 		ctx.Context,
 		db,
 		cfg.NodeEndpoint,
+		configType,
 		cfg.DepotBootstrap,
 	)
 	if err != nil {
