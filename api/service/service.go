@@ -9,6 +9,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"gorm.io/gorm"
 
+	"github.com/photon-storage/go-photon/config/config"
 	"github.com/photon-storage/go-photon/sak/io/rpc"
 	pbc "github.com/photon-storage/photon-proto/consensus"
 	pbd "github.com/photon-storage/photon-proto/depot"
@@ -29,6 +30,7 @@ func New(
 	ctx context.Context,
 	db *gorm.DB,
 	nodeEndpoint string,
+	configType config.ConfigType,
 	depotBootstrap []string,
 ) (*Service, error) {
 	nc, err := rpcDialConfig(nodeEndpoint).Dial(ctx)
@@ -37,7 +39,7 @@ func New(
 	}
 
 	// TODO(doris): Async find multi depot client.
-	depotEndpoint, err := findDepot(ctx, depotBootstrap)
+	depotEndpoint, err := findDepot(ctx, configType, depotBootstrap)
 	if err != nil {
 		return nil, err
 	}

@@ -9,12 +9,17 @@ import (
 
 	"github.com/photon-storage/go-common/log"
 	"github.com/photon-storage/go-photon/chain/p2p/peers/scorers"
+	"github.com/photon-storage/go-photon/config/config"
 	"github.com/photon-storage/go-photon/p2p"
 )
 
 var ErrTimeout = errors.New("find node time out")
 
-func findDepot(ctx context.Context, bootstrap []string) (string, error) {
+func findDepot(
+	ctx context.Context,
+	configType config.ConfigType,
+	bootstrap []string,
+) (string, error) {
 	pf, err := newPeerFinder(ctx, bootstrap)
 	if err != nil {
 		return "", err
@@ -22,7 +27,7 @@ func findDepot(ctx context.Context, bootstrap []string) (string, error) {
 
 	deadline := time.Now().Add(time.Minute)
 	timedOut := false
-	var endpoint p2p.RPCEndpoint
+	endpoint := ""
 	pf.Run(func(n *enode.Node) bool {
 		if time.Now().After(deadline) {
 			timedOut = true
@@ -40,8 +45,15 @@ func findDepot(ctx context.Context, bootstrap []string) (string, error) {
 			return false
 		}
 
-		if err := n.Load(&endpoint); err != nil {
-			log.Error("load endpoint", "err", err)
+		// NOTE: return endpoint directly due to photon node bug,
+		// change this if the bug fixed.
+		switch configType {
+		case config.Devnet:
+			endpoint = "13.214.138.159:8000"
+		case config.Testnet:
+			endpoint = "18.141.161.140:8000"
+		default:
+			endpoint = "127.0.0.1:8000"
 		}
 
 		return true
@@ -51,7 +63,7 @@ func findDepot(ctx context.Context, bootstrap []string) (string, error) {
 		return "", ErrTimeout
 	}
 
-	return string(endpoint), nil
+	return endpoint, nil
 }
 
 func newPeerFinder(
