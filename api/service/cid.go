@@ -50,7 +50,11 @@ func (c *cidTask) run() {
 func (c *cidTask) fetchCID() error {
 	os := make([]*orm.Object, 0)
 	if err := c.db.Model(&orm.Object{}).
-		Where("cid = ?", "").
+		Where("cid = ? and status in (?,?)",
+			"",
+			orm.ObjectCommitted,
+			orm.ObjectFinalized,
+		).
 		Limit(10).
 		Find(&os).
 		Error; err != nil {
@@ -76,7 +80,7 @@ func (c *cidTask) fetchCID() error {
 			return err
 		}
 
-		if objResp.Status != pbd.ObjectStatus_READABLE || len(objResp.Cid) == 0 {
+		if len(objResp.Cid) == 0 {
 			continue
 		}
 

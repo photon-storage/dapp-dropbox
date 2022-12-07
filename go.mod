@@ -7,9 +7,9 @@ require (
 	github.com/ethereum/go-ethereum v1.10.25
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-playground/validator/v10 v10.11.1
-	github.com/photon-storage/go-common v0.0.0-20221104050211-5fd74299d91a
-	github.com/photon-storage/go-photon v0.0.0-20221111133042-905d1cc031a3
-	github.com/photon-storage/photon-proto v0.0.0-20221109124216-78863e7ef48b
+	github.com/photon-storage/go-common v0.0.0-20221201055738-384fda0f66a0
+	github.com/photon-storage/go-photon v0.0.0-20221205074636-2736b3f2fbe0
+	github.com/photon-storage/photon-proto v0.0.0-20221118055653-eca551a11bb6
 	github.com/pkg/errors v0.9.1
 	github.com/urfave/cli/v2 v2.16.3
 	google.golang.org/grpc v1.49.0
